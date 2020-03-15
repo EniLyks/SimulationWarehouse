@@ -1,0 +1,303 @@
+﻿<Window x:Class="SimulationWarehouse.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimulationWarehouse"
+        xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+        mc:Ignorable="d"
+        Title="MainWindow" MinHeight="750" MinWidth="1250" WindowState="Maximized"
+        Background="WhiteSmoke" FontFamily="Verdana" >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <GroupBox Grid.Column="0" Grid.Row="0" Header="Выбор модели" Margin="5,5,10,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="0.1*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <ListBox x:Name="grBox_Models_ListBox_Models" Grid.RowSpan="2" DisplayMemberPath="NameModel" SelectionChanged="grBox_Models_ListBox_Models_SelectionChanged"></ListBox>
+                    <Button x:Name="grBox_Models_Button_ModelAdd" Grid.Column="1" Grid.Row="0" Content="+"  Click="grBox_Models_Button_ModelAdd_Click"/>
+                    <Button x:Name="grBox_Models_Button_ModelDelete" Grid.Column="1" Grid.Row="1" Content="-" Click="grBox_Models_Button_ModelDelete_Click"></Button>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+
+                    <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">Текущий день:</TextBlock>
+                    <TextBox x:Name="grBox_Models_TextBox_SimulationPeriod" Grid.Column="1" Grid.Row="1"  IsEnabled="False"></TextBox>
+                    <TextBlock Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">Длительность моделирования:</TextBlock>
+                    <TextBox x:Name="grBox_Models_TextBox_SimulationAllPeriod" Grid.Row="0" Grid.Column="1" />
+
+                    <Button x:Name="grBox_Models_Button_NextDay" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Content="Следующий день" IsEnabled="False" Click="grBox_Models_Button_NextDay_Click"></Button>
+                    <Button x:Name="grBox_Models_Button_AllPeriod" Grid.Row="2" Grid.Column="0" Content="К последнему дню" IsEnabled="False" Click="grBox_Models_Button_AllPeriod_Click"></Button>
+                    <Button x:Name="grBox_Models_Button_SimulationStatus" Grid.Row="3" Grid.ColumnSpan="2" Content="Начать моделирование" Click="grBox_Models_Button_SimulationStatus_Click"></Button>
+
+                </Grid>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox x:Name="grBox_PropertyModel" Grid.Column="1" Header="Свойства выбранной модели" Margin="0,5,10,0">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition MaxHeight="40"></RowDefinition>
+                    <RowDefinition MaxHeight="40"></RowDefinition>
+                    <RowDefinition MaxHeight="40"></RowDefinition>
+                    <RowDefinition MaxHeight="40"></RowDefinition>
+                    <RowDefinition Height="4*"></RowDefinition>
+                    <RowDefinition MaxHeight="40"></RowDefinition>
+                    <RowDefinition MaxHeight="40"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <TextBox x:Name="grBox_PropertyModel_TextBox_ModelName" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextAlignment="Center"></TextBox>
+                <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Охват населения:</TextBlock>
+                <TextBox x:Name="grBox_PropertyModel_TextBox_PopulationCity" Grid.Row="1" Grid.Column="1"></TextBox>
+                <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">ККП:</TextBlock>
+                <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBox x:Name="grBox_PropertyModel_TextBox_FEP" MinWidth="100"/>
+                    <Button x:Name="grBox_PropertyModel_Button_AutoFEP" MinWidth="100" Content="Авто" Margin="10,0,0,0" Click="grBox_PropertyModel_Button_AutoFEP_Click"/>
+                </StackPanel>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Все объекты</TextBlock>
+                <TextBlock Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">Объекты в данной модели</TextBlock>
+                <ListBox x:Name="grBox_PropertyModel_ListBox_AllProducts" Grid.Row="4" Grid.Column="0" DisplayMemberPath="NameProduct" MouseDoubleClick="grBox_PropertyModel_ListBox_AllProducts_MouseDoubleClick"></ListBox>
+                <ListBox x:Name="grBox_PropertyModel_ListBox_ProductInModel" Grid.Row="4" Grid.Column="1" DisplayMemberPath="NameProduct" SelectionChanged="grBox_PropertyModel_ListBox_ProductInModel_SelectionChanged" MouseDoubleClick="grBox_PropertyModel_ListBox_ProductInModel_MouseDoubleClick"></ListBox>
+
+                <Grid Grid.Row="5" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow">Штук при заказе:</TextBlock>
+                    <TextBox x:Name="grBox_PropertyModel_TextBox_CountInOrder" Grid.Column="1"  ></TextBox>
+                    <TextBlock Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow">Остаток для дозаказа:</TextBlock>
+                    <TextBox x:Name="grBox_PropertyModel_TextBox_MinCount" Grid.Column="3"></TextBox>
+
+
+                </Grid>
+
+                <Grid Grid.Row="6" Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow">Относительный коэф. спроса:</TextBlock>
+                    <TextBox x:Name="grBox_PropertyModel_TextBox_DemandFactor" Grid.Column="1"></TextBox>
+                </Grid>
+
+                <Button x:Name="grBox_PropertyModel_Button_SaveChange" Grid.Row="6" Grid.Column="1" Content="Сохранить" Click="grBox_PropertyModel_Button_SaveChange_Click"></Button>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox  x:Name="groupBox_EditProduct" Grid.Column="2" Header="Редактирование товаров" Margin="0,5,5,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition MaxHeight="40"></RowDefinition>
+                    <RowDefinition Height="4*"></RowDefinition>
+                    <RowDefinition MaxHeight="40"></RowDefinition>
+                    <RowDefinition MaxHeight="40"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition MaxWidth="50"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+
+                    <Button x:Name="groupBox_EditProduct_Button_NewProduct" Grid.Column="1" Content="+" Click="groupBox_EditProduct_Button_NewProduct_Click"></Button>
+                </Grid>
+
+                <ListBox x:Name="groupBox_EditProduct_ListBox_Products" Grid.Column="0" Grid.Row="1" Grid.RowSpan="3" DisplayMemberPath="NameProduct" SelectionChanged="groupBox_EditProduct_ListBox_Products_SelectionChanged">
+
+                </ListBox>
+
+                <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Button x:Name="groupBox_EditProduct_Button_ProductUp" Grid.Column="1" Grid.Row="0" Click="groupBox_EditProduct_Button_ProductUp_Click"></Button>
+                    <Button x:Name="groupBox_EditProduct_Button_ProductDown" Grid.Column="1" Grid.Row="1" Click="groupBox_EditProduct_Button_ProductDown_Click"></Button>
+                </Grid>
+
+                <Button x:Name="groupBox_EditProduct_Button_SaveProduct" Grid.Row="2" Grid.Column="2" Content="Сохранить" IsEnabled="False" Click="groupBox_EditProduct_Button_SaveProduct_Click"></Button>
+                <Button x:Name="groupBox_EditProduct_Button_DeleteProduct" Grid.Row="3" Grid.Column="2" Content="Удалить" IsEnabled="False" Click="groupBox_EditProduct_Button_DeleteProduct_Click"></Button>
+
+                <Grid Grid.Column="2" Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition MaxHeight="40"></RowDefinition>
+                        <RowDefinition MaxHeight="40"></RowDefinition>
+                        <RowDefinition MaxHeight="40"></RowDefinition>
+                        <RowDefinition MaxHeight="40"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"></ColumnDefinition>
+                        <ColumnDefinition MaxWidth="10" MinWidth="5"></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">Название товара</TextBlock>
+                    <TextBox x:Name="groupBox_EditProduct_TextBox_NameProduct" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" IsEnabled="False"></TextBox>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">ИККП</TextBlock>
+                    <TextBox x:Name="groupBox_EditProduct_TextBox_IFEP" Grid.Row="3" Grid.Column="0" IsEnabled="False"></TextBox>
+                    <TextBlock Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">/</TextBlock>
+                    <TextBox x:Name="groupBox_EditProduct_TextBox_Divider" Grid.Row="3" Grid.Column="2" IsEnabled="False">1</TextBox>
+
+                </Grid>
+
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Row="1" Header="Вывод результатов" Margin="5,10,10,5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition MaxHeight="30"></RowDefinition>
+                    <RowDefinition ></RowDefinition>
+                    <RowDefinition ></RowDefinition>
+                    <RowDefinition ></RowDefinition>
+                    <RowDefinition MaxHeight="40" MinHeight="40"></RowDefinition>
+                    <RowDefinition MaxHeight="60" MinHeight="60"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                    <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                    <ColumnDefinition ></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom">Список товаров</TextBlock>
+                <TextBlock Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Bottom">Результат:</TextBlock>
+                <TextBlock Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">общий | в текущем дне</TextBlock>
+                <ListBox x:Name="grBox_Result_ListBox_ProductsInModel" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="3" DisplayMemberPath="NameProduct" SelectionChanged="grBox_Result_ListBox_ProductsInModel_SelectionChanged"></ListBox>
+
+                <GroupBox Grid.Row="4" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="4" Header="Общий результат моделирования">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition ></RowDefinition>
+                            <RowDefinition ></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" VerticalAlignment="Bottom">Количество заявок</TextBlock>
+                        <TextBox x:Name="grBox_Result_TextBox_AllCountOrders" Grid.Row="1" Grid.Column="0" IsReadOnly="True"></TextBox>
+                        <TextBlock Grid.Row="0" Grid.Column="1" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" VerticalAlignment="Bottom">Из них успешные</TextBlock>
+                        <TextBox x:Name="grBox_Result_TextBox_AllSuccessfulOrders" Grid.Row="1" Grid.Column="1" IsReadOnly="True"></TextBox>
+                        <TextBlock Grid.Row="0" Grid.Column="2" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" VerticalAlignment="Bottom">Из них неуспешные</TextBlock>
+                        <TextBox x:Name="grBox_Result_TextBox_AllUnSuccessfulOrders" Grid.Row="1" Grid.Column="2" IsReadOnly="True"></TextBox>
+                        <TextBlock Grid.Row="0" Grid.Column="3" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" VerticalAlignment="Bottom">Доля неуспешных</TextBlock>
+                        <TextBox x:Name="grBox_Result_TextBox_ProportionUnsuccessfulAllOrders" Grid.Row="1" Grid.Column="3" IsReadOnly="True"></TextBox>
+
+                    </Grid>
+                </GroupBox>
+                <Grid Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" VerticalAlignment="Center">Количество заявок:</TextBlock>
+                    <TextBox x:Name="grBox_Result_TextBox_ProductCountOrders" Grid.Row="0" Grid.Column="1" IsReadOnly="True"></TextBox>
+                    <TextBlock Grid.Row="1" Grid.Column="0" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" VerticalAlignment="Center">Успешные:</TextBlock>
+                    <TextBox x:Name="grBox_Result_TextBox_ProductSuccessfulOrders" Grid.Row="1" Grid.Column="1" IsReadOnly="True"></TextBox>
+                    <TextBlock Grid.Row="2" Grid.Column="0" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" VerticalAlignment="Center">Недостаток:</TextBlock>
+                    <TextBox x:Name="grBox_Result_TextBox_ProductUnSuccessfulOrders" Grid.Row="2" Grid.Column="1" IsReadOnly="True"></TextBox>
+                    <TextBlock Grid.Row="3" Grid.Column="0" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" VerticalAlignment="Center">Доля неуспешных:</TextBlock>
+                    <TextBox x:Name="grBox_Result_TextBox_ProportionUnsuccessfulProductOrders" Grid.Row="3" Grid.Column="1" IsReadOnly="True"></TextBox>
+                    <TextBlock Grid.Row="4" Grid.Column="0" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" VerticalAlignment="Center">Остаток товара:</TextBlock>
+                    <TextBox x:Name="grBox_Result_TextBox_BalanceProduct" Grid.Row="4" Grid.Column="1" IsReadOnly="True"></TextBox>
+
+                </Grid>
+
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Header="Представление результатов в виде диаграмм" Margin="0,10,5,5" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="20" MaxHeight="30"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <TextBlock x:Name="grBox_Graph_TextBlock_ProductName" Grid.Row="0" Grid.ColumnSpan="2" FontSize="16" 
+                           VerticalAlignment="Center" HorizontalAlignment="Center" 
+                           Foreground="Black" FontFamily="Tekton Pro Cond" >Название товара</TextBlock>
+
+                <chartingToolkit:Chart Grid.Column="0" Grid.Row="1" Name="PieChartAllPeriod" Title="Весь период" Foreground="Black" FontFamily="Tekton Pro Cond">
+                    <chartingToolkit:PieSeries DependentValuePath="Value" Background="Black"
+            IndependentValuePath="Key" ItemsSource="{Binding}">
+                    </chartingToolkit:PieSeries>
+
+                </chartingToolkit:Chart>
+
+                <chartingToolkit:Chart Grid.Column="1" Grid.Row="1" Name="PieChartToday" Title="Текущий день" Foreground="Black" FontFamily="Tekton Pro Cond">
+                    <chartingToolkit:PieSeries DependentValuePath="Value"
+            IndependentValuePath="Key" ItemsSource="{Binding}" Foreground="Black"/>
+                </chartingToolkit:Chart>
+            </Grid>
+        </GroupBox>
+
+    </Grid>
+</Window>
